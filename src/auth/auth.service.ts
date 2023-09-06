@@ -11,7 +11,7 @@ export class AuthService {
         private jwtService: JwtService,
     ) { }
 
-    async signIn(email: string, pass: string): Promise<any> {
+    async login(email: string, pass: string): Promise<any> {
         const user: User = await this.usersService.findOne(email);
 
         // TODO: add hashing

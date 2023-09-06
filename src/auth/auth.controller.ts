@@ -1,23 +1,30 @@
-import { Controller, HttpStatus, Post, Get, Request, HttpCode, Body, UseGuards } from '@nestjs/common';
-
+import { Controller, HttpStatus, Post, Get, Res, Req, HttpCode, Body, UseGuards, Request as Reqq } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { Public } from './auth.public-routes';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService) { }
 
+    // TODO: get request to show html template.
     @Public()
-    @HttpCode(HttpStatus.OK)
+    @UseGuards(AuthGuard)
     @Post('login')
-    signIn(@Body() signInDto: Record<string, any>) {
-        return this.authService.signIn(signInDto.username, signInDto.password);
+    async login(@Req() req: Request, @Res({ passthrough: true }) res: Response): Promise<void> {
+        const { access_token } = await this.authService.login(req.body.email, req.body.password);
+        res.cookie('access_token', access_token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax',
+            expires: new Date(Date.now() + 1 * 24 * 60 * 1000),
+        }).send({ status: 'ok' });
     }
 
     @UseGuards(AuthGuard)
     @Get('profile')
-    getProfile(@Request() req) {
+    getProfile(@Reqq() req: any) {
         return req.user
     }
 }
