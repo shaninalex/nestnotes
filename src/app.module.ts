@@ -5,6 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { NotesModule } from './notes/notes.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth/auth.guard';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Module({
@@ -15,8 +19,16 @@ import { NotesModule } from './notes/notes.module';
         DatabaseModule,
         UsersModule,
         NotesModule,
+        AuthModule,
    ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        JwtService,
+        {
+            provide: APP_GUARD,
+            useClass: AuthGuard
+        }
+    ],
 })
 export class AppModule { }
