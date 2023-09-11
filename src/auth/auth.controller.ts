@@ -4,6 +4,7 @@ import { User } from '../models/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
+import { Public } from './auth.public-routes';
 
 
 class LoginPayload {
@@ -36,6 +37,7 @@ export class AuthController {
         private readonly authService: AuthService,
         private readonly userService: UserService) {}
 
+    @Public()
     @Post('login')
     async login(@Body() payload: LoginPayload, @Res({passthrough: true}) res: Response) {
         const { access_token } = await this.authService.login(payload.email, payload.password);
@@ -47,6 +49,7 @@ export class AuthController {
         }).send({ status: 'ok' });
     }
 
+    @Public()
     @Post('register')
     async register(@Body() payload: RegisterPayload) {
         const newuser = new User();
