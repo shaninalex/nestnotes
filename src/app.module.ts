@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
+import { NotesModule } from './notes/notes.module';
 
 
 @Module({
@@ -17,6 +18,7 @@ import { DatabaseModule } from './database/database.module';
         AuthModule,
         UserModule,
         DatabaseModule,
+        NotesModule,
    ],
     controllers: [AppController],
     providers: [

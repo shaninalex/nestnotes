@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { IsEmail, IsString } from 'class-validator';
-import { User } from 'src/models/user.entity';
-import { UserService } from 'src/user/user.service';
+import { User } from '../models/user.entity';
+import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 

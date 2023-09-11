@@ -1,15 +1,18 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { IsString } from 'class-validator';
+import { User } from './user.entity';
 
 @Entity()
 export class Note {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
+    @IsString()
+    @Column({ nullable: false })
     public title: string;
 
-    @Column()
+    @IsString()
+    @Column({ nullable: false })
     public content: string;
 
     @CreateDateColumn()
@@ -18,6 +21,6 @@ export class Note {
     @UpdateDateColumn()
     public updated_at: Date;
 
-
-    // Foreign key for user
+    @ManyToOne(() => User, (user) => user.id, { nullable: false })
+    public user: number;
 }
