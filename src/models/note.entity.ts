@@ -18,4 +18,6 @@ export class Note {
     @UpdateDateColumn()
     public updated_at: Date;
 
+
+    // Foreign key for user
 }
