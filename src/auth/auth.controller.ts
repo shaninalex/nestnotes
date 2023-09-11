@@ -1,19 +1,44 @@
-import { Controller, HttpStatus, Post, Get, Res, Req, HttpCode, Body, UseGuards, Request as Reqq } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { IsEmail, IsString } from 'class-validator';
+import { User } from 'src/models/user.entity';
+import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
-import { AuthGuard } from './auth.guard';
-import { Public } from './auth.public-routes';
-import { Request, Response } from 'express';
+import { Response } from 'express';
+
+
+class LoginPayload {
+    @IsEmail()
+    email: string;
+
+    @IsString()
+    password: string;
+}
+
+class RegisterPayload {
+    @IsEmail()
+    email: string;
+
+    @IsString()
+    name: string;
+
+    @IsString()
+    password: string
+
+    @IsString()
+    password_confirm: string
+}
+
 
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService) { }
 
-    // TODO: get request to show html template.
-    @Public()
-    @UseGuards(AuthGuard)
+    constructor(
+        private readonly authService: AuthService,
+        private readonly userService: UserService) {}
+
     @Post('login')
-    async login(@Req() req: Request, @Res({ passthrough: true }) res: Response): Promise<void> {
-        const { access_token } = await this.authService.login(req.body.email, req.body.password);
+    async login(@Body() payload: LoginPayload, @Res({passthrough: true}) res: Response) {
+        const { access_token } = await this.authService.login(payload.email, payload.password);
         res.cookie('access_token', access_token, {
             httpOnly: true,
             secure: false,
@@ -22,9 +47,14 @@ export class AuthController {
         }).send({ status: 'ok' });
     }
 
-    @UseGuards(AuthGuard)
-    @Get('profile')
-    getProfile(@Reqq() req: any) {
-        return req.user
+    @Post('register')
+    async register(@Body() payload: RegisterPayload) {
+        const newuser = new User();
+        newuser.email = payload.email;
+        newuser.name = payload.name;
+        // hash password with argon2
+        newuser.password = payload.password;
+        const createdUser = this.userService.create(newuser);
+        return createdUser
     }
 }
