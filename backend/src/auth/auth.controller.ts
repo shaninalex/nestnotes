@@ -1,35 +1,9 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
-import { IsEmail, IsString } from 'class-validator';
-import { Match } from '../internal/match.decorator';
+import { Body, Controller, Post, Req, Res, Get, Response as NResponse } from '@nestjs/common';
 import { User } from '../models/user.entity';
 import { UserService } from '../user/user.service';
-import { AuthService } from './auth.service';
-import { Response } from 'express';
+import { AuthService, LoginPayload, RegisterPayload } from './auth.service';
+import { Request, Response } from 'express';
 import { Public } from './auth.public-routes';
-
-
-class LoginPayload {
-    @IsEmail()
-    email: string;
-
-    @IsString()
-    password: string;
-}
-
-class RegisterPayload {
-    @IsEmail()
-    email: string;
-
-    @IsString()
-    name: string;
-
-    @IsString()
-    password: string
-
-    @IsString()
-    @Match("password")
-    password_confirm: string
-}
 
 
 @Controller('auth')
@@ -37,11 +11,11 @@ export class AuthController {
 
     constructor(
         private readonly authService: AuthService,
-        private readonly userService: UserService) {}
+        private readonly userService: UserService) { }
 
     @Public()
     @Post('login')
-    async login(@Body() payload: LoginPayload, @Res({passthrough: true}) res: Response) {
+    async login(@Body() payload: LoginPayload, @Res({ passthrough: true }) res: Response) {
         const { access_token } = await this.authService.login(payload.email, payload.password);
         res.cookie('access_token', access_token, {
             httpOnly: true,
@@ -54,12 +28,20 @@ export class AuthController {
     @Public()
     @Post('register')
     async register(@Body() payload: RegisterPayload) {
-        const newuser = new User();
-        newuser.email = payload.email;
-        newuser.name = payload.name;
-        newuser.password = payload.password;
-        const createdUser = await this.userService.create(newuser);
-        delete createdUser["password"];
-        return createdUser
+        const user = await this.authService.register(payload);
+        delete user["password"];
+        return user
+    }
+
+    @Get('user')
+    async userDetail(@Req() request: Request): Promise<User> {
+        const user = await this.userService.findOne(request["user"].email);
+        delete user["password"];
+        return user
+    }
+
+    @Get('logout')
+    async logout(@NResponse() response: Response) {
+        response.clearCookie("access_token").send({ status: "logged out" });
     }
 }

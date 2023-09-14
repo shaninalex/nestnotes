@@ -17,7 +17,7 @@ export class NotesService {
     }
 
     async get(user_id: number): Promise<Note[]> {
-        const where: FindOptionsWhere<Note> = {"user": user_id}; 
+        const where: FindOptionsWhere<Note> = {"user": user_id};
         return this.noteRepository.findBy(where);
     }
 

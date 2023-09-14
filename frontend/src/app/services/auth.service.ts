@@ -29,4 +29,8 @@ export class AuthService {
     logout() {
         return this.http.get("/api/v1/auth/logout");
     }
+
+    user() {
+        return this.http.get("/api/v1/auth/user");
+    }
 }

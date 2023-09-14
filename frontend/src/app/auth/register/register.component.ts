@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RegisterComponent {
     constructor(
         private authService: AuthService,
+        private router: Router,
     ) {}
 
     registerForm: FormGroup = new FormGroup({
@@ -24,8 +26,8 @@ export class RegisterComponent {
             this.authService.register(
                 values.email, values.name, values.password, values.password_confirm,
             ).subscribe({
-                next: data => {
-                    console.log(data);
+                next: () => {
+                    this.router.navigate(["/"]);
                 },
                 error: err => {
                     console.log(err.data);
@@ -34,6 +36,4 @@ export class RegisterComponent {
 
         }
     }
-
-
 }
