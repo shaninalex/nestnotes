@@ -1,0 +1,26 @@
+<div class="text-center">
+    <h1 class="mb-4">Login</h1>
+
+    <form class="mb-4" [formGroup]="loginForm" (ngSubmit)="submit()">
+        <div class="mb-4">
+            <input class="text-center bg-transparent border rounded py-2 px-4" type="email" placeholder="Email"
+                formControlName="email" />
+        </div>
+        <div class="mb-4">
+            <input class="text-center bg-transparent border rounded py-2 px-4" type="password" placeholder="Password"
+                formControlName="password" />
+        </div>
+        <div>
+            <button type="submit"
+                [disabled]="!loginForm.valid"
+                class="bg-teal-600 py-2 px-4 rounded hover:bg-teal-700
+                       disabled:opacity-50 disabled:pointer-events-none">Login</button>
+        </div>
+    </form>
+
+    <p class="text-sm">
+        or <a class="text-teal-600"
+            routerLink="/auth/register">Register</a>
+    </p>
+
+</div>
