@@ -1,8 +1,13 @@
-import { Controller, Get, Post, Body, Req, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
 import { Note } from 'src/models/note.entity';
 import { NotesService } from './notes.service';
 import { Request } from 'express';
-import { UpdateResult } from 'typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
+
+
+interface SingleNoteRequestParams {
+    note_id: number
+}
 
 
 @Controller('notes')
@@ -26,14 +31,24 @@ export class NotesController {
     }
 
     @Patch('/:note_id')
-    async updateNote(
-        @Param() params: any,
-        @Body() payload: Note, 
-        @Req() request: Request
-    ): Promise<UpdateResult> {
+    async updateNote(@Param() params: SingleNoteRequestParams, @Body() payload: Note, @Req() request: Request): Promise<UpdateResult | NotFoundException> {
         payload.user = request["sub"];
         payload.id = params.note_id;
         const result = this.noteService.patch(request["sub"], payload);
+        if ((await result).affected === 0) {
+            // note not found
+            return new NotFoundException()
+        }
+        return result
+    }
+
+    @Delete('/:note_id')
+    async deleteNote(@Param() params: SingleNoteRequestParams, @Req() request: Request): Promise<DeleteResult | NotFoundException> {
+        const result = this.noteService.delete(request["sub"], params.note_id);
+        if ((await result).affected === 0) {
+            // note not found
+            return new NotFoundException()
+        }
         return result
     }
 }

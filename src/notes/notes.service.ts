@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, FindOptionsWhere, Repository, UpdateResult } from 'typeorm';
 import { Note } from 'src/models/note.entity';
-import { of } from 'rxjs';
+
 
 @Injectable()
 export class NotesService {
@@ -24,5 +24,10 @@ export class NotesService {
     async patch(user_id: number, payload: Partial<Note>): Promise<UpdateResult> {
         const where: FindOptionsWhere<Note> = {"id": payload.id, "user": user_id};
         return this.noteRepository.update(where, payload);
+    }
+
+    async delete(user_id: number, note_id: number): Promise<DeleteResult> {
+        const where: FindOptionsWhere<Note> = {"id": note_id, "user": user_id};
+        return this.noteRepository.delete(where);
     }
 }
