@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Req, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
-import { Note } from 'src/models/note.entity';
+import { Note } from '../models/note.entity';
 import { NotesService } from './notes.service';
 import { Request } from 'express';
 import { DeleteResult, UpdateResult } from 'typeorm';
