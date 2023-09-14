@@ -54,9 +54,6 @@ export class AuthController {
     @Public()
     @Post('register')
     async register(@Body() payload: RegisterPayload) {
-        if (payload.password !== payload.password_confirm) {
-
-        }
         const newuser = new User();
         newuser.email = payload.email;
         newuser.name = payload.name;
