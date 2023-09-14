@@ -7,5 +7,5 @@ down:
 down_volumes:
 	docker compose down -v
 
-start_app:
+app_start:
 	npm run start:dev

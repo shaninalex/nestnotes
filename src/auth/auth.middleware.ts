@@ -1,11 +1,12 @@
 import {
-    CanActivate, ExecutionContext, Injectable, UnauthorizedException,
+    CanActivate, ExecutionContext, Injectable, UnauthorizedException
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from './auth.public-routes';
 import { Request } from 'express';
+import { UserService } from 'src/user/user.service';
 
 
 @Injectable()
@@ -13,6 +14,7 @@ export class AuthGuard implements CanActivate {
     constructor(
         private jwtService: JwtService,
         private configService: ConfigService,
+        private userService: UserService,
         private reflector: Reflector,
     ) {}
 
@@ -42,7 +44,11 @@ export class AuthGuard implements CanActivate {
                     secret: this.configService.get('SECRET')
                 }
             )
+            if (!await this.userService.findOne(payload["email"])) {
+                throw new UnauthorizedException();
+            }
             request['user'] = payload
+            request["sub"] = payload["sub"] // often we need only user id
         } catch {
             throw new UnauthorizedException();
         }

@@ -55,9 +55,9 @@ export class AuthController {
         const newuser = new User();
         newuser.email = payload.email;
         newuser.name = payload.name;
-        // hash password with argon2
         newuser.password = payload.password;
-        const createdUser = this.userService.create(newuser);
+        const createdUser = await this.userService.create(newuser);
+        delete createdUser["password"];
         return createdUser
     }
 }
