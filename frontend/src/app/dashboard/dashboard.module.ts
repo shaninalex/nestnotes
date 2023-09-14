@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { RouterModule, Routes } from '@angular/router';
+import { HeaderComponent } from './ui/header/header.component';
+import { SidebarComponent } from './ui/sidebar/sidebar.component';
+import { HomeComponent } from './home/home.component';
 
 
 const routes: Routes = [
@@ -14,7 +17,10 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        DashboardComponent
+        DashboardComponent,
+        HeaderComponent,
+        SidebarComponent,
+        HomeComponent,
     ],
     imports: [
         CommonModule,

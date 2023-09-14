@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -10,6 +11,7 @@ export class LoginComponent {
 
     constructor(
         private authService: AuthService,
+        private router: Router,
     ) {}
 
     loginForm: FormGroup = new FormGroup({
@@ -25,6 +27,7 @@ export class LoginComponent {
             ).subscribe({
                 next: data => {
                     console.log(data);
+                    this.router.navigate([""])
                 },
                 error: err => {
                     console.log(err.data);
