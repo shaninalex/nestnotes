@@ -34,8 +34,8 @@ export class NotesController {
     async updateNote(@Param() params: SingleNoteRequestParams, @Body() payload: Note, @Req() request: Request): Promise<UpdateResult | NotFoundException> {
         payload.user = request["sub"];
         payload.id = params.note_id;
-        const result = this.noteService.patch(request["sub"], payload);
-        if ((await result).affected === 0) {
+        const result = await this.noteService.patch(request["sub"], payload);
+        if (result.affected === 0) {
             // note not found
             return new NotFoundException()
         }
@@ -44,8 +44,8 @@ export class NotesController {
 
     @Delete('/:note_id')
     async deleteNote(@Param() params: SingleNoteRequestParams, @Req() request: Request): Promise<DeleteResult | NotFoundException> {
-        const result = this.noteService.delete(request["sub"], params.note_id);
-        if ((await result).affected === 0) {
+        const result = await this.noteService.delete(request["sub"], params.note_id);
+        if (result.affected === 0) {
             // note not found
             return new NotFoundException()
         }
