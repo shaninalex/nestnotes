@@ -1,5 +1,6 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { IsEmail, IsString } from 'class-validator';
+import { Match } from '../internal/match.decorator';
 import { User } from '../models/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
@@ -26,6 +27,7 @@ class RegisterPayload {
     password: string
 
     @IsString()
+    @Match("password")
     password_confirm: string
 }
 
@@ -52,6 +54,9 @@ export class AuthController {
     @Public()
     @Post('register')
     async register(@Body() payload: RegisterPayload) {
+        if (payload.password !== payload.password_confirm) {
+
+        }
         const newuser = new User();
         newuser.email = payload.email;
         newuser.name = payload.name;
