@@ -20,10 +20,11 @@ export class NotesService {
         const note = await this.noteRepository.createQueryBuilder("note")
             .where('note.user = :user_id AND note.id = :note_id', { user_id, note_id })
             .getOne();
+
         if (!note) {
             throw new NotFoundException('Note not found');
         }
-        return note[0];
+        return note;
     }
 
     async get(user_id: number): Promise<Note[]> {

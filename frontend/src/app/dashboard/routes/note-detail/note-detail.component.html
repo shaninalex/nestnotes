@@ -10,7 +10,9 @@
         </div>
         <div class="mb-4 flex gap-4 items-center justify-between">
             <button type="submit" [disabled]="!noteForm.valid" class="bg-cyan-600 py-2 px-4 rounded hover:bg-cyan-700
-            disabled:opacity-50 disabled:pointer-events-none">Save</button>
+            disabled:opacity-50 disabled:pointer-events-none">
+                {{ create? "Save": "Update"}}
+            </button>
             <a routerLink="/">Back</a>
         </div>
     </form>
