@@ -8,6 +8,7 @@ import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
+    app.enableCors();
     app.use(cookieParser()); // required to read cookies like this: request.cookies["cookie_name"]
     app.setGlobalPrefix('api/v1');
     const configService = app.get(ConfigService);
