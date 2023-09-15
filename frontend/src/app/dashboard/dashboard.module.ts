@@ -11,12 +11,17 @@ import { NotesService } from './services/notes.service';
 import { SettingsComponent } from './routes/settings/settings.component';
 import { NoteitemComponent } from './routes/home/noteitem/noteitem.component';
 import { NotFoundComponent } from './routes/not-found/not-found.component';
+import { NoteDetailComponent } from './routes/note-detail/note-detail.component';
+import { NotificationsComponent } from './ui/notifications/notifications.component';
+import { NotificationsService } from './services/notification.service';
 
 
 const routes: Routes = [
     { 
         path: "", component: DashboardComponent, children: [
             { path: "", component: HomeComponent },
+            { path: "note/:note_id", component: NoteDetailComponent },
+            { path: "create", component: NoteDetailComponent },
             { path: "settings", component: SettingsComponent },
             { path: "**", component: NotFoundComponent },
         ]
@@ -33,6 +38,8 @@ const routes: Routes = [
         SettingsComponent,
         NoteitemComponent,
         NotFoundComponent,
+        NoteDetailComponent,
+        NotificationsComponent,
     ],
     imports: [
         CommonModule,
@@ -41,7 +48,8 @@ const routes: Routes = [
         RouterModule.forChild(routes)
     ],
     providers: [
-        NotesService
+        NotesService,
+        NotificationsService
     ]
 })
 export class DashboardModule { }

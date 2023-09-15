@@ -6,5 +6,5 @@ import { Note } from 'src/app/dashboard/models/note';
     templateUrl: './noteitem.component.html'
 })
 export class NoteitemComponent {
-    @Input('note') note: Note = <Note>{title:'', content:''};
+    @Input('note') note: Note;
 }

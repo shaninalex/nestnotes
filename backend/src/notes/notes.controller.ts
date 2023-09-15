@@ -30,6 +30,12 @@ export class NotesController {
         return notes;
     }
 
+    @Get('/:note_id')
+    async getNote(@Param() params: SingleNoteRequestParams, @Req() request: Request): Promise<Note> {
+        const result = await this.noteService.getOne(request["sub"], params.note_id );
+        return result
+    }
+
     @Patch('/:note_id')
     async updateNote(@Param() params: SingleNoteRequestParams, @Body() payload: Note, @Req() request: Request): Promise<UpdateResult | NotFoundException> {
         payload.user = request["sub"];
