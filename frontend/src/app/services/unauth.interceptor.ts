@@ -12,9 +12,6 @@ export class UnAuthInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>,
               next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(
-            tap(data => {
-                console.log(data)
-            }),
             catchError(err => {
                 if (err.status === 401) {
                     this.router.navigate(['/auth/login']);
