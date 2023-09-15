@@ -1,0 +1,7 @@
+<a routerLink="/note/{{ note.id }}" class="block border border-cyan-600 p-4">
+    <h4 class="font-bold mb-2">{{ note.title }}</h4>
+    <hr class="mb-2">
+    <div>
+        {{ (note.content.length > 90)? (note.content | slice:0:90)+' ...':(note.content) }}
+    </div>
+</a>
