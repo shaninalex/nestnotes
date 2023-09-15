@@ -39,7 +39,9 @@ Backend has 2 models - User and Note. Each user can have multiple notes.
 
 This app requires a few features that I'll be adding later:
 
-- notes search
-- notes categories and tags
-- notes additional properties - "background color", "pinned"
-- handle file uploads
+[] - notes search
+[] - notes categories and tags
+[] - notes additional properties - "background color", "pinned"
+[] - handle file uploads
+[] - NestJS cache
+[] - ngrx on fronend ( for disabling spaning requests on )
