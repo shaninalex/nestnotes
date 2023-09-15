@@ -1,0 +1,11 @@
+<div *ngFor="let n of notifications; index as i" class="p-4 flex justify-between"
+    [ngClass]="{
+        'bg-cyan-600': n.type === 'success',
+        'bg-red-600': n.type === 'error',
+        'bg-yellow-500': n.type === 'warning'
+    }">
+    <small>
+        {{ n.content }}
+    </small>
+    <button (click)="delete(i)">&Cross;</button>
+</div>
