@@ -25,8 +25,7 @@ export class LoginComponent {
                 this.loginForm.value.email,
                 this.loginForm.value.password,
             ).subscribe({
-                next: data => {
-                    console.log(data);
+                next: () => {
                     this.router.navigate([""])
                 },
                 error: err => {
